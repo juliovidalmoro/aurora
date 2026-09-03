@@ -1,6 +1,6 @@
 {
   "name": "aurora-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Servidor MCP mínimo (stdio) para validar el protocolo antes de construir nada más complejo.",
   "private": true,
   "type": "module",
@@ -15,11 +15,13 @@
   },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",
+    "better-sqlite3": "^13.0.3",
     "zod": "^4.2.0"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
     "@types/node": "^22.0.0",
-    "typescript": "^5.7.0",
-    "tsx": "^4.19.0"
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
   }
 }
