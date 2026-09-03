@@ -79,3 +79,8 @@ Esto abre una UI web donde se puede:
 ```
 
 (Requiere haber ejecutado antes `npm run build`.)
+
+## Flujo de contribución
+
+Los cambios se desarrollan en una rama a partir de `main` y se integran vía
+Pull Request (revisión + merge), en lugar de hacer push directo a `main`.
