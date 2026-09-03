@@ -16,6 +16,8 @@
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",
     "better-sqlite3": "^13.0.3",
+    "dotenv": "^17.4.2",
+    "grammy": "^1.46.0",
     "zod": "^4.2.0"
   },
   "devDependencies": {

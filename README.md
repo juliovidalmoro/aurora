@@ -1,12 +1,13 @@
 # aurora-mcp
 
 Servidor MCP (Model Context Protocol) en TypeScript/Node.js con gestión de
-tareas persistida en SQLite (vía `better-sqlite3`).
+tareas persistida en SQLite (vía `better-sqlite3`) y envío de mensajes de
+Telegram (vía `grammY`).
 
 Usa el SDK oficial v2 del protocolo (`@modelcontextprotocol/server`), con
 transporte **stdio** — pensado solo para uso local, lanzando el servidor
 como proceso hijo desde un cliente MCP (Claude Desktop, el MCP Inspector,
-etc.). Sin Telegram ni transporte HTTP todavía.
+etc.). Sin transporte HTTP todavía.
 
 ## Persistencia
 
@@ -68,6 +69,54 @@ CREATE TABLE tareas (
 - **Devuelve**: confirmación, o un error claro (`isError: true`) si no
   existe ninguna tarea con ese id — nunca falla en silencio
 
+## Telegram
+
+Los mensajes se envían con [grammY](https://grammy.dev) (SDK oficial de la
+comunidad más activamente mantenido para el Bot API de Telegram: última
+versión publicada hace apenas unos días frente a las últimas versiones
+mucho más antiguas de alternativas como `telegraf`, verificado en el
+registro de npm antes de elegir).
+
+### Configuración (`.env`)
+
+1. Copia `.env.example` a `.env`:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Crea un bot con [@BotFather](https://t.me/BotFather) en Telegram y copia
+   el token que te da a `TELEGRAM_BOT_TOKEN` en `.env`.
+
+3. Arranca el servidor (`npm run dev`) y, desde tu cliente MCP, llama al
+   tool `obtener_chat_id_pendiente`. Si aún no devuelve nada, escríbele
+   **cualquier mensaje** al bot desde tu Telegram y vuelve a llamar al
+   tool: te devolverá tu `chat_id`.
+
+4. Pega ese `chat_id` en `TELEGRAM_CHAT_ID` en `.env` y reinicia el
+   servidor. A partir de aquí ya puedes usar `enviar_telegram`.
+
+`.env` nunca se sube al repositorio (está en `.gitignore`) — solo
+`.env.example`, que se mantiene vacío como plantilla.
+
+### Herramientas de Telegram
+
+#### `obtener_chat_id_pendiente`
+
+Herramienta **temporal**, solo para la configuración inicial (no forma
+parte de la funcionalidad definitiva). Sin parámetros. Devuelve el
+`chat_id` del último mensaje que le ha llegado al bot, o un aviso de que
+aún no ha llegado ninguno.
+
+#### `enviar_telegram`
+
+- **Parámetros**: `mensaje` (string, requerido)
+- **Efecto**: envía ese texto al chat de `TELEGRAM_CHAT_ID`
+- **Devuelve**: confirmación, o un error claro (`isError: true`) si falta
+  `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID` en `.env` o si falla el envío —
+  nunca falla en silencio ni tira abajo el resto del servidor (los tools
+  de tareas siguen funcionando igual aunque Telegram no esté configurado)
+
 ## Requisitos
 
 - Node.js ≥ 20
@@ -76,6 +125,7 @@ CREATE TABLE tareas (
 
 ```bash
 npm install
+cp .env.example .env   # y rellena TELEGRAM_BOT_TOKEN (ver sección Telegram)
 ```
 
 ## Ejecución en local
@@ -118,6 +168,8 @@ Esto abre una UI web donde se puede, en orden:
    confirmación (y que con un `id` inexistente devuelve un error claro).
 4. Volver a llamar a `listar_tareas` con `solo_pendientes: true` y
    comprobar que la tarea completada ya no aparece.
+5. (Con `.env` configurado) Llamar a `enviar_telegram` con un `mensaje` de
+   prueba y comprobar en tu Telegram que ha llegado.
 
 ## Configurarlo en un cliente MCP (p. ej. Claude Desktop)
 
