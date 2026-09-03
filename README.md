@@ -1,4 +1,4 @@
-# secretaria-mcp
+# aurora-mcp
 
 Servidor MCP (Model Context Protocol) mínimo, en TypeScript/Node.js, para
 validar el protocolo de extremo a extremo antes de construir nada más
@@ -45,7 +45,7 @@ npm start
 ```
 
 El proceso escribe únicamente en `stderr` un mensaje de arranque
-(`secretaria-mcp: servidor MCP escuchando en stdio`); `stdout` queda
+(`aurora-mcp: servidor MCP escuchando en stdio`); `stdout` queda
 reservado para los mensajes JSON-RPC del protocolo, así que no debe
 lanzarse sueltos en una terminal esperando ver algo en pantalla: hace
 falta un cliente MCP hablando por stdin/stdout.
@@ -70,9 +70,9 @@ Esto abre una UI web donde se puede:
 ```json
 {
   "mcpServers": {
-    "secretaria-mcp": {
+    "aurora-mcp": {
       "command": "node",
-      "args": ["/ruta/absoluta/a/secretaria-mcp/dist/index.js"]
+      "args": ["/ruta/absoluta/a/aurora-mcp/dist/index.js"]
     }
   }
 }

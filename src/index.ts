@@ -8,7 +8,7 @@ import * as z from 'zod/v4';
  * ni base de datos, ni red, ni integración con nada externo todavía.
  */
 function buildServer(): McpServer {
-  const server = new McpServer({ name: 'secretaria-mcp', version: '0.1.0' });
+  const server = new McpServer({ name: 'aurora-mcp', version: '0.1.0' });
 
   server.registerTool(
     'crear_tarea',
@@ -32,7 +32,7 @@ function buildServer(): McpServer {
 
 const handle = serveStdio(buildServer);
 
-console.error('secretaria-mcp: servidor MCP escuchando en stdio');
+console.error('aurora-mcp: servidor MCP escuchando en stdio');
 
 process.on('SIGINT', () => {
   void handle.close().then(() => process.exit(0));
